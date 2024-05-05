@@ -1,10 +1,15 @@
 package com.example.movieappmad24.models
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.Index
+import androidx.room.PrimaryKey
 
+
+@Entity(indices = [Index(value = ["id"], unique = true)])
 data class Movie(
+    @PrimaryKey(autoGenerate = true)
+    val dbId: Long = 0,
     val id: String,
     val title: String,
     val year: String,
@@ -12,13 +17,26 @@ data class Movie(
     val director: String,
     val actors: String,
     val plot: String,
-    val images: List<String>,
+    @Ignore
+    val images: List<String> = emptyList(), // This is ignored by Room and only used in Kotlin logic.
     val trailer: String,
-    val rating: String
-,
-    val initialIsFavorite: Boolean = false
+    val rating: String,
+    var isFavorite: Boolean = false
 ) {
-    var isFavorite by mutableStateOf(initialIsFavorite)
+    // Secondary constructor for Room which does not require 'images' parameter. To fix weird Bug
+    constructor(
+        dbId: Long = 0,
+        id: String,
+        title: String,
+        year: String,
+        genre: String,
+        director: String,
+        actors: String,
+        plot: String,
+        trailer: String,
+        rating: String,
+        isFavorite: Boolean = false
+    ) : this(dbId, id, title, year, genre, director, actors, plot, emptyList(), trailer, rating, isFavorite)
 }
 
 fun getMovies(): List<Movie> {

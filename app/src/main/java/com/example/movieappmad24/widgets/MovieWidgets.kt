@@ -53,22 +53,23 @@ import coil.request.ImageRequest
 import com.example.movieappmad24.models.Movie
 import com.example.movieappmad24.models.getMovies
 import com.example.movieappmad24.navigation.Screen
+import com.example.movieappmad24.viewmodels.HomeViewModel
 import com.example.movieappmad24.viewmodels.MoviesViewModel
 
 
 @Composable
 fun MovieList(
     modifier: Modifier,
-    movies: List<Movie> = getMovies(),
+    movies: List<Movie>,
     navController: NavController,
-    viewModel: MoviesViewModel
-){
+    onFavoriteClick: (String) -> Unit,  // Accept a lambda for favorite clicks
+) {
     LazyColumn(modifier = modifier) {
         items(movies) { movie ->
             MovieRow(
                 movie = movie,
-                onFavoriteClick = {movieId ->
-                    viewModel.toggleFavoriteMovie(movieId)
+                onFavoriteClick = { movieId ->
+                    onFavoriteClick(movieId)  // Call the passed lambda
                 },
                 onItemClick = { movieId ->
                     navController.navigate(route = Screen.DetailScreen.withId(movieId))
@@ -157,7 +158,7 @@ fun FavoriteIcon(
             modifier = Modifier.clickable {
                 onFavoriteClick()
                 Log.i("MovieWidget", "icon clicked")
-                                          },
+            },
             tint = MaterialTheme.colorScheme.secondary,
             imageVector =
             if (isFavorite) {

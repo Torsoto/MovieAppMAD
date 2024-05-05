@@ -5,37 +5,38 @@ import androidx.lifecycle.viewModelScope
 import com.example.movieappmad24.data.MovieRepository
 import com.example.movieappmad24.models.Movie
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
+
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-// Inherit from ViewModel class
-class MoviesViewModel(
-    private val repository: MovieRepository
-) : ViewModel() {
-    private val _movies = MutableStateFlow(listOf<Movie>())
+class WatchlistViewModel(private val repository: MovieRepository) : ViewModel() {
     private val _favoriteMovies = MutableStateFlow<List<Movie>>(emptyList())
-    val movies: StateFlow<List<Movie>> = _movies.asStateFlow()
     val favoriteMovies: StateFlow<List<Movie>> = _favoriteMovies.asStateFlow()
 
     init {
         viewModelScope.launch {
-            repository.getFavoriteMovies().collect { favorites ->
-                _favoriteMovies.value = favorites
+            repository.getFavoriteMovies().collect { movies ->
+                _favoriteMovies.value = movies
             }
         }
     }
 
-    init {
+    fun toggleFavorite(movieId: String) {
         viewModelScope.launch {
-            repository.getAllMovies().distinctUntilChanged()
-                .collect{ listOfMovies ->
-                    _movies.value = listOfMovies
-                }
+            val movie = repository.getById(movieId).firstOrNull()
+            movie?.let {
+                it.isFavorite = !it.isFavorite
+                repository.updateMovie(it)
+                updateFavorites() // Update the list of favorite movies after toggling
+            }
+        }
+    }
+
+    private suspend fun updateFavorites() {
+        repository.getFavoriteMovies().collect { movies ->
+            _favoriteMovies.value = movies
         }
     }
 }
