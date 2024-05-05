@@ -39,11 +39,11 @@ import com.example.movieappmad24.widgets.SimpleTopAppBar
 fun DetailScreen(
     movieId: String?,
     navController: NavController,
-    moviesViewModel: DetailViewModel
+    viewModel: DetailViewModel
 ) {
 
     movieId?.let {
-        val movie by moviesViewModel.getMovieById(movieId).collectAsState(initial = null)
+        val movie by viewModel.getMovieById(movieId).collectAsState(initial = null)
 
 
         Scaffold (
@@ -62,7 +62,7 @@ fun DetailScreen(
                 MovieRow(
                     modifier = Modifier.padding(innerPadding),
                     movie = movie!!,
-                    onFavoriteClick = { moviesViewModel.toggleFavoriteMovie(movie!!.id) }
+                    onFavoriteClick = { viewModel.toggleFavoriteMovie(movie!!.id) }
                 )
 
                 Divider(modifier = Modifier.padding(4.dp))
