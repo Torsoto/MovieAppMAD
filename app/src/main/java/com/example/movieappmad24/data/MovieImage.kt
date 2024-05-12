@@ -6,20 +6,10 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.example.movieappmad24.models.Movie
 
-@Entity(
-    foreignKeys = [
-        ForeignKey(
-            entity = Movie::class,
-            parentColumns = ["id"],
-            childColumns = ["movieId"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ],
-    indices = [Index(value = ["movieId"])] // Ensure an index on foreign key column
-)
+@Entity(tableName = "movieImage")
 data class MovieImage(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    val movieId: String,
+    val id: Long = 0,
+    val movieId: Long,
     val url: String
 )

@@ -51,10 +51,7 @@ import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.example.movieappmad24.models.Movie
-import com.example.movieappmad24.models.getMovies
 import com.example.movieappmad24.navigation.Screen
-import com.example.movieappmad24.viewmodels.HomeViewModel
-import com.example.movieappmad24.viewmodels.MoviesViewModel
 
 
 @Composable
@@ -79,6 +76,7 @@ fun MovieList(
     }
 }
 
+
 @Composable
 fun MovieRow(
     modifier: Modifier = Modifier,
@@ -98,7 +96,7 @@ fun MovieRow(
         Column {
 
             MovieCardHeader(
-                imageUrl = movie.images[0],
+                imageUrl = "https://images-na.ssl-images-amazon.com/images/M/MV5BMjEyOTYyMzUxNl5BMl5BanBnXkFtZTcwNTg0MTUzNA@@._V1_SX1500_CR0,0,1500,999_AL_.jpg",
                 isFavorite = movie.isFavorite,
                 onFavoriteClick = { onFavoriteClick(movie.id) }
             )

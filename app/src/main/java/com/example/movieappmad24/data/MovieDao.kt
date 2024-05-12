@@ -21,8 +21,11 @@ interface MovieDao {
     @Delete
     suspend fun delete(movie: Movie)
 
-    @Query("SELECT * FROM movie WHERE dbId=:id")
-    fun get(id: String): Flow<Movie>  // Changed type from String to Long
+    @Insert
+    suspend fun addMovieImage(movieImage: MovieImage)
+
+    @Query("SELECT * FROM movie WHERE Id=:id")
+    fun get(id: String): Flow<Movie>
 
     @Query("SELECT * FROM movie")
     fun getAll(): Flow<List<Movie>>
@@ -37,10 +40,20 @@ interface MovieDao {
     suspend fun deleteAll()
 
     @Transaction
+    @Query("SELECT * FROM movie WHERE movie.dbId = :id")
+    fun getById(id: Long?) : Flow<Movie>
+
+    @Transaction
     @Query("SELECT * FROM movie")
     fun getAllMoviesWithImages(): Flow<List<MovieWithImages>>
 
     @Transaction
     @Query("SELECT * FROM movie WHERE dbId = :id")
     fun getMovieWithImages(id: Long): Flow<MovieWithImages>
+
+    @Query("SELECT * FROM movie WHERE id = :id LIMIT 1")
+    suspend fun getMovieById(id: String): Movie?
+
+    @Query("SELECT COUNT(*) FROM movie")
+    suspend fun countMovies() : Int
 }

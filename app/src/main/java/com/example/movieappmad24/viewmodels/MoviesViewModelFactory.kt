@@ -10,7 +10,7 @@ class MoviesViewModelFactory(private val repository: MovieRepository) : ViewMode
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> HomeViewModel(repository) as T
             modelClass.isAssignableFrom(WatchlistViewModel::class.java) -> WatchlistViewModel(repository) as T
             modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
-                val movieId = "put default or managed movieId here"
+                val movieId = "DEFAULT VALUE"
                 DetailViewModel(repository, movieId) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class")

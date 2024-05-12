@@ -30,7 +30,6 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import androidx.navigation.NavController
 import com.example.movieappmad24.viewmodels.DetailViewModel
-import com.example.movieappmad24.viewmodels.MoviesViewModel
 import com.example.movieappmad24.widgets.HorizontalScrollableImageView
 import com.example.movieappmad24.widgets.MovieRow
 import com.example.movieappmad24.widgets.SimpleTopAppBar
@@ -62,7 +61,7 @@ fun DetailScreen(
                 MovieRow(
                     modifier = Modifier.padding(innerPadding),
                     movie = movie!!,
-                    onFavoriteClick = { viewModel.toggleFavoriteMovie(movie!!.id) }
+                    onFavoriteClick = { viewModel.toggleFavoriteMovie(movieId) }
                 )
 
                 Divider(modifier = Modifier.padding(4.dp))
